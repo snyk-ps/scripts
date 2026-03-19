@@ -26,15 +26,9 @@ scripts/
 
 ## Current Scripts
 
-### check_token
-A Python utility for checking and validating tokens.
-
-**Usage:**
-```bash
-cd check_token
-pip install -r requirements.txt
-python check_token.py
-```
+| Script Name | Description | Owner |
+|---|---|---|
+| [check_token](check_token) | Python utility for checking GitHub organization permissions | torsten.cannell@snyk.io |
 
 ## Contributing
 
