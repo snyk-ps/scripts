@@ -1,0 +1,51 @@
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+Python.framework/
+
+# Package managers & Dependencies
+node_modules/
+.npm
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Gemfile.lock
+.bundle/
+vendor/
+
+# Go
+go.sum
+go.work.sum
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large files & artifacts
+*.log
+logs/
+.coverage
+.pytest_cache/
+htmlcov/
