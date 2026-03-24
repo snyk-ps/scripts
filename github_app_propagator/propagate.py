@@ -10,6 +10,7 @@ integrations and the clone endpoint.
 Author: Torsten Cannell, torsten.cannell@snyk.io
 Revision History:
 - 2026-03-24: Initial version using V1 API clone endpoint.
+- 2026-03-24: Resolve GitHub App via integration type github-cloud-app (not github).
 """
 
 import argparse
@@ -19,6 +20,8 @@ import requests
 
 # API Constants
 API_V1_BASE = "https://api.snyk.io/v1"
+# V1 integration type for Snyk GitHub Cloud App (GitHub.com). Legacy OAuth uses type "github".
+DEFAULT_GITHUB_APP_TYPE = "github-cloud-app"
 
 def get_headers(api_token):
     """Return standard headers for Snyk V1 API."""
@@ -28,29 +31,36 @@ def get_headers(api_token):
     }
 
 
-def get_github_integration_id(org_id, api_token):
+def get_github_app_integration_id(org_id, integration_type, api_token):
     """
-    Find the V1 integration ID for the GitHub App on a given organization.
+    Find the V1 integration ID for the Snyk GitHub App on a given organization.
+
+    Uses GET /org/{{orgId}}/integrations/{{type}}. Type github-cloud-app is the
+    GitHub Cloud App; type github is the separate legacy GitHub OAuth integration.
 
     Args:
         org_id (str): Organization UUID.
+        integration_type (str): V1 type, e.g. github-cloud-app or github-server-app.
         api_token (str): Snyk API token.
 
     Returns:
         str: Integration ID if found, else None.
     """
-    url = f"{API_V1_BASE}/org/{org_id}/integrations"
+    url = f"{API_V1_BASE}/org/{org_id}/integrations/{integration_type}"
     response = requests.get(url, headers=get_headers(api_token))
-    response.raise_for_status()
-    
-    integrations = response.json()
-    # The V1 list endpoint returns a dict: {"github": "uuid", "gitlab": "uuid"}
-    github_id = integrations.get("github")
-    if not github_id:
-        print(f"Error: No GitHub App (github) entry in source org {org_id}")
+    if response.status_code == 404:
+        print(
+            f"Error: No integration of type {integration_type!r} in org {org_id}. "
+            "Configure the GitHub App in this org first."
+        )
         return None
-    
-    return github_id
+    response.raise_for_status()
+    data = response.json()
+    integration_id = data.get("id")
+    if not integration_id:
+        print(f"Error: Unexpected response for {integration_type} in org {org_id}")
+        return None
+    return integration_id
 
 
 def list_group_orgs(group_id, api_token):
@@ -106,6 +116,15 @@ def main():
     parser.add_argument(
         "--source-org-id", required=True, help="The Source (Template) Org ID"
     )
+    parser.add_argument(
+        "--integration-type",
+        default=DEFAULT_GITHUB_APP_TYPE,
+        choices=("github-cloud-app", "github-server-app"),
+        help=(
+            "V1 integration type for the Snyk GitHub App to clone "
+            "(github.com vs GitHub Enterprise Server App)"
+        ),
+    )
     args = parser.parse_args()
 
     api_token = os.getenv("SNYK_TOKEN")
@@ -113,8 +132,10 @@ def main():
         print("Error: SNYK_TOKEN environment variable not set.")
         sys.exit(1)
 
-    # 1. Get the GitHub App integration ID from the source org (V1 key: github)
-    integ_id = get_github_integration_id(args.source_org_id, api_token)
+    # 1. GitHub App integration ID (not legacy type "github")
+    integ_id = get_github_app_integration_id(
+        args.source_org_id, args.integration_type, api_token
+    )
     if not integ_id:
         sys.exit(1)
 
