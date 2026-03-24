@@ -6,7 +6,7 @@ For more complex scripts or API wrappers produce Python scripts.
 
 ## General Requirements
 
-- You must use the current date in all time-sensitive calculations and references.
+- You must use the current date in **UTC** for all time-sensitive calculations and references. If necessary, access Google Search to verify.
   If necessary, access Google Search to verify.
 - Never use an em dash (—) in comments or documentation.
 
@@ -41,16 +41,18 @@ docs](https://docs.snyk.io/snyk-api):
 
 ## Python Code Requirements
 
+Target **Python 3.11+**.
+
 All code produced for Python must:
 
 - Always use argparse.
-  For the SNYK_TOKEN use an environment variable.
-- Use PEP 257 docstrings
-- Follow PEP 8 Guidelines
-- Use the Python library when possible.
+- For `SNYK_TOKEN` or any other secrets, use an environment variable. Never commit secrets. Do not log the token or credentials.
+- Use PEP 257 docstrings on modules and public functions and methods.
+- Follow PEP 8 Guidelines.
+- Use the Python standard library when possible.
   Avoid dependencies outside the standard library if possible.
-- Any dependencies outside the standard library must not contain any high or
-  critical vulnerabilities.
+- Any dependency outside the standard library must not introduce high or critical issues. **Use Snyk** to verify new or updated dependencies before merging.
+- Always add non-standard-library dependencies to the requirements file with **pinned versions** (for example `package==1.2.3`).
 - Always produce a requirements file.
 
 ## Shell Script Requirements
@@ -104,7 +106,7 @@ when dealing with spaces or special characters in filenames or input.
 - Line Length: Aim for a maximum line length of 80 characters for readability
   in standard terminal windows.
 
-### Additional Resources
+# Additional Resources
 
 When in doubt, fall back to
 - For shell scripts: [Google's style guide for shell scripts](https://google.github.io/styleguide/shellguide.html#:~:text=Control%20flow%20statements%20in%20shell,aligned%20with%20the%20opening%20statement.).
