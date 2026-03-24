@@ -68,3 +68,6 @@ Thumbs.db
 .coverage
 .pytest_cache/
 htmlcov/
+
+# create_issues_table: generated output (may contain sensitive issue data)
+create_issues_table/*.csv

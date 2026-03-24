@@ -5,6 +5,8 @@
 # Author: Torsten Cannell, torsten.cannell@snyk.io
 # Usage: sh ./create-group-issues-table.sh <group_id> [output_file]
 #
+# Output CSVs under this directory are gitignored (see repo .gitignore); do not commit them.
+#
 # Revision History:
 # 2026-03-24: Initial version
 ################################################################################
