@@ -29,6 +29,8 @@ scripts/
 | Script Name | Description | Owner |
 |---|---|---|
 | [check_token](check_token) | Python utility for checking GitHub organization permissions | torsten.cannell@snyk.io |
+| [create_issues_table](create_issues_table) | Shell script that exports high and critical Snyk issues for a group to CSV via the REST API | torsten.cannell@snyk.io |
+| [github_app_propagator](github_app_propagator) | Python utility that clones the Snyk GitHub App integration from one org to the other orgs in a group | torsten.cannell@snyk.io |
 
 ## Contributing
 
@@ -39,7 +41,7 @@ scripts/
    - Brief description of what the script does
    - Installation/setup instructions
    - Usage examples
-5. Update the main README with your script details
+5. Add a row for your tool to the **Current Scripts** table in this README (see `.cursor/rules/script-guidelines.md`)
 6. Ensure your script has clear comments and is easy for others to understand
 
 ## Requirements

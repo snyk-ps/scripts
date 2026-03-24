@@ -17,6 +17,18 @@ If a README doesn't exist, create one and ensure it has the following.
 - Installation/setup instructions
 - Usage examples (usage for shell scripts begins with sh, for Python use python)
 
+## Root README: Current Scripts table
+
+Whenever you add a new script or tool directory at the repository root (alongside existing tools like `check_token`), you must update the root `README.md`:
+
+- Add a row to the **Current Scripts** table under `## Current Scripts`.
+- **Script Name:** link the directory name to that folder (for example `[my_tool](my_tool)`).
+- **Description:** one short line consistent with existing rows (what it does, main inputs such as API or token if helpful).
+- **Owner:** email of the maintainer. Use the **Author** line from the tool README or script header; if none exists, use the contributor Snyk email.
+- Keep table rows **sorted alphabetically** by directory name.
+
+Do not list non-tool folders such as `api_specs` or `.cursor` in this table. Shared reference data stays documented elsewhere if needed.
+
 ## Snyk API Reference
 
 For any API to Snyk references, reference the API specs in ./scripts/api_specs.
