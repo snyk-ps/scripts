@@ -42,6 +42,3 @@ python propagate.py --group-id "<group-uuid>" --source-org-id "<source-org-uuid>
 
 The script skips the source org when iterating; all other orgs in the group are targets.
 
-## API reference
-
-For endpoint details beyond what you see in the code, see the [Snyk V1 API documentation](https://docs.snyk.io/snyk-api/v1-api) and the API specs in the parent repository under `api_specs/` if present.

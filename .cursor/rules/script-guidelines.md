@@ -27,17 +27,21 @@ Whenever you add a new script or tool directory at the repository root (alongsid
 - **Owner:** email of the maintainer. Use the **Author** line from the tool README or script header; if none exists, use the contributor Snyk email.
 - Keep table rows **sorted alphabetically** by directory name.
 
-Do not list non-tool folders such as `api_specs` or `.cursor` in this table. Shared reference data stays documented elsewhere if needed.
+Do not list non-tool folders such as `.cursor` in this table. Shared reference data stays documented elsewhere if needed.
+
+## API specs (Cursor context)
+
+Store OpenAPI and similar machine-readable specs under **`.cursor/rules/api_specs/`** when you integrate with third-party systems (Snyk, GitHub, or anything else you call over HTTP). Use subfolders or clear filenames (for example `snyk/rest-spec.json`, `github/openapi.yaml`) so it stays obvious which integration each file belongs to. These files are **context for Cursor** when generating or editing integration code; the application does not need to load them at runtime unless you deliberately ship them.
 
 ## Snyk API Reference
 
-For any API to Snyk references, reference the API specs in ./scripts/api_specs.
-If the spec does not contain enough information, reference the [Snyk API
+When referencing Snyk APIs in this project, consult the Snyk specs under `.cursor/rules/api_specs/snyk/` first (for example `rest-spec.json` and `v1-api-spec.yaml`). If the spec does not contain enough information, reference the [Snyk API
 docs](https://docs.snyk.io/snyk-api):
 
 - [REST API](https://docs.snyk.io/snyk-api/rest-api/about-the-rest-api)
 - [V1 API](https://docs.snyk.io/snyk-api/v1-api)
 - [Authentication](https://docs.snyk.io/snyk-api/authentication-for-api)
+
 
 ## Python Code Requirements
 
