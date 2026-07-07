@@ -31,6 +31,7 @@ scripts/
 | [check_token](check_token) | Python utility for checking GitHub organization permissions | torsten.cannell@snyk.io |
 | [create_issues_table](create_issues_table) | Shell script that exports high and critical Snyk issues for a group to CSV via the REST API | torsten.cannell@snyk.io |
 | [github_app_propagator](github_app_propagator) | Python utility that clones the Snyk GitHub App integration from one org to the other orgs in a group | torsten.cannell@snyk.io |
+| [api_reference_flow](api_reference_flow) | TypeScript reference modules for the Vpost-merge SCA ignore copy flow and SAST SCM import flow | samuel.dahlberg@snyk.io |
 
 ## Contributing
 

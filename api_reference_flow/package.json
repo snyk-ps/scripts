@@ -1,0 +1,22 @@
+{
+  "name": "api-reference-flow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reference TypeScript modules for the post-merge SCA waiver copy flow and SAST SCM import flow.",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "trigger-sca-scan": "tsx src/01-trigger-sca-scan.ts",
+    "copy-ignores": "tsx src/02-copy-ignores-feature-to-main.ts",
+    "remonitor-main-branch": "tsx src/03-remonitor-main-branch.ts",
+    "cron-trigger-sast-scm-scan": "tsx src/04-cron-trigger-sast-scm-scan.ts",
+    "check-existing-scm-scan": "tsx src/05-check-existing-scm-scan.ts",
+    "sast-scm-import": "tsx src/06-sast-scm-import.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "22.9.0",
+    "tsx": "4.19.2",
+    "typescript": "5.6.3"
+  }
+}
