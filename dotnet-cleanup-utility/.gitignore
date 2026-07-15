@@ -1,0 +1,5 @@
+.env
+.vscode/launch.json
+.vscode
+.venv-3.10
+.venv
