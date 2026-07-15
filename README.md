@@ -6,6 +6,10 @@ A shared repository for Snyk Professional Services team scripts and utilities.
 
 This repository contains simple scripts and tools developed by the Snyk Professional Services team to support common tasks and workflows. Feel free to contribute useful scripts that may benefit the team.
 
+## Disclaimer
+
+These scripts are **short-lived utilities** provided **as-is**. There is **no guarantee of ongoing maintenance, updates, or support**. Use them at your own discretion and verify behavior in your environment before relying on them in production workflows.
+
 ## Structure
 
 Each script/tool should be contained in its own directory with clear documentation and any dependencies specified. Use appropriate dependency files for your language:
