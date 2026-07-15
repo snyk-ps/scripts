@@ -8,7 +8,6 @@ For more complex scripts or API wrappers produce Python scripts.
 
 - You must use the current date in **UTC** for all time-sensitive calculations and references. If necessary, access Google Search to verify.
   If necessary, access Google Search to verify.
-- Never use an em dash (—) in comments or documentation.
 
 ## README Format
 

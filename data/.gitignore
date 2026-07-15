@@ -1,0 +1,4 @@
+# Ignore everything in this directory (e.g. .env, local secrets).
+# This file stays tracked so the empty directory layout exists in git.
+*
+!.gitignore

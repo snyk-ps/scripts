@@ -30,7 +30,6 @@ dist/
 *.egg-info/
 
 # IDE & Editor
-.vscode/
 .idea/
 *.swp
 *.swo

@@ -24,6 +24,10 @@ scripts/
 - **Go**: `go.mod`
 - **Shell/Bash**: document system dependencies in README
 
+## Local data (`data/`)
+
+The [`data/`](data) directory is reserved for **machine-local files that must not be committed**: for example `.env` files with API tokens, org or project IDs used while debugging, or other secrets and personal scratch files. The folder is kept in the repository (via `data/.gitignore`), but **everything inside it except that `.gitignore` file is ignored by Git**. Copy or create your own files there as needed; do not commit them.
+
 ## Current Scripts
 
 | Script Name | Description | Owner |
@@ -31,6 +35,7 @@ scripts/
 | [check_token](check_token) | Python utility for checking GitHub organization permissions | torsten.cannell@snyk.io |
 | [create_issues_table](create_issues_table) | Shell script that exports high and critical Snyk issues for a group to CSV via the REST API | torsten.cannell@snyk.io |
 | [github_app_propagator](github_app_propagator) | Python utility that clones the Snyk GitHub App integration from one org to the other orgs in a group | torsten.cannell@snyk.io |
+| [ignore_non_fixable_vulns](ignore_non_fixable_vulns) | Python utility: discover non-fixable vulns per org/group, CSV checkpoint/resume, project ignores with disregardIfFixable | torsten.cannell@snyk.io |
 
 ## Contributing
 
