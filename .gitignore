@@ -74,3 +74,5 @@ create_issues_table/*.csv
 
 # ignore_non_fixable_vulns: state CSV (org/project/issue IDs)
 /ignore_non_fixable_progress.csv
+
+/ignore_non_fixable_vulns/.git
