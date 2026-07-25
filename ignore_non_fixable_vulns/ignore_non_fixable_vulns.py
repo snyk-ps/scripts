@@ -14,6 +14,8 @@ Revision History:
 - 2026-05-06: Fix REST pagination (links.next as {\"href\": ...} JSON:API).
 - 2026-05-06: REST Accept application/vnd.api+json, Link header + starting_after fallback.
 - 2026-05-06: Merge V1 /org/.../dependencies project discovery; JSON:API included; Link regex.
+- 2026-07-17: Single SNYK_API_BASE_URL host; append /v1 or /rest per endpoint.
+- 2026-07-17: Treat empty optional env vars as unset (GitHub Actions passes "").
 """
 
 from __future__ import annotations
@@ -32,8 +34,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-DEFAULT_API_BASE = "https://api.snyk.io/v1"
-DEFAULT_REST_BASE = "https://api.snyk.io/rest"
+DEFAULT_API_HOST = "https://api.snyk.io"
 DEFAULT_REST_VERSION = "2024-10-15"
 DEFAULT_REASON = "No fix available"
 DEFAULT_STATE_CSV = "ignore_non_fixable_progress.csv"
@@ -41,6 +42,36 @@ DEFAULT_STATE_CSV = "ignore_non_fixable_progress.csv"
 CSV_COLUMNS = ("group_id", "org_id", "project_id", "issue_id", "status")
 STATUS_PENDING = "PENDING"
 STATUS_IGNORED = "IGNORED"
+
+
+def env_or_default(key: str, default: str) -> str:
+    """Return env var value if set and non-empty, else *default*."""
+    raw = os.environ.get(key)
+    if raw is None:
+        return default
+    stripped = raw.strip()
+    return stripped if stripped else default
+
+
+def resolve_snyk_api_bases(raw: str) -> tuple[str, str]:
+    """
+    Return (v1_base, rest_base) from SNYK_API_BASE_URL / --api-base-url.
+
+    Accepts a host root such as ``https://api.eu.snyk.io`` or ``api.eu.snyk.io``.
+    Trailing ``/v1`` or ``/rest`` suffixes are stripped if present.
+    """
+    host = raw.strip().rstrip("/") or DEFAULT_API_HOST.strip().rstrip("/")
+    while True:
+        stripped = False
+        for suffix in ("/v1", "/rest"):
+            if host.endswith(suffix):
+                host = host[: -len(suffix)].rstrip("/")
+                stripped = True
+        if not stripped:
+            break
+    if not re.match(r"^https?://", host, re.IGNORECASE):
+        host = f"https://{host}"
+    return f"{host}/v1", f"{host}/rest"
 
 
 def build_headers(token: str, *, send_json: bool) -> dict[str, str]:
@@ -543,17 +574,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--api-base-url",
-        default=os.environ.get("SNYK_API_BASE_URL", DEFAULT_API_BASE),
-        help="V1 API base URL (ignores + aggregated issues).",
-    )
-    parser.add_argument(
-        "--rest-api-url",
-        default=os.environ.get("SNYK_REST_API_URL", DEFAULT_REST_BASE),
-        help="REST API base URL (list projects). EU: https://api.eu.snyk.io/rest",
+        default=env_or_default("SNYK_API_BASE_URL", DEFAULT_API_HOST),
+        help=(
+            "Snyk API host (e.g. https://api.snyk.io or api.eu.snyk.io). "
+            "/v1 and /rest are appended per endpoint."
+        ),
     )
     parser.add_argument(
         "--rest-version",
-        default=os.environ.get("SNYK_REST_VERSION", DEFAULT_REST_VERSION),
+        default=env_or_default("SNYK_REST_VERSION", DEFAULT_REST_VERSION),
         help="REST API version query param for /orgs/.../projects.",
     )
     parser.add_argument(
@@ -727,8 +756,8 @@ def main() -> int:
     org_ids = env_extend_ids(args.org_id, "SNYK_ORG_ID", "SNYK_ORG_IDS")
 
     state_path = Path(args.state_csv).expanduser()
-    api_base = args.api_base_url.rstrip("/")
-    rest_base = args.rest_api_url.rstrip("/")
+    api_base, rest_base = resolve_snyk_api_bases(args.api_base_url)
+    rest_version = args.rest_version.strip() or DEFAULT_REST_VERSION
     disregard = not args.no_disregard_if_fixable
     require_not_partial = not args.include_partially_fixable
 
@@ -771,7 +800,7 @@ def main() -> int:
         discovered = discover_rows(
             api_base=api_base,
             rest_base=rest_base,
-            rest_version=args.rest_version,
+            rest_version=rest_version,
             org_to_group=org_to_group,
             project_filter=project_filter,
             token=token,
