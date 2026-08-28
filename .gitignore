@@ -76,3 +76,5 @@ create_issues_table/*.csv
 /ignore_non_fixable_progress.csv
 
 /ignore_non_fixable_vulns/.git
+
+/data/*

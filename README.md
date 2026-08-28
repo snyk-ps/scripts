@@ -45,6 +45,7 @@ The `[data/](data)` directory is reserved for **machine-local files that must no
 | [dotnet-cleanup-utility](dotnet-cleanup-utility)     | Python utility: dedupe duplicate .NET Snyk projects in an org, migrate ignores to the keeper, delete older copies        | [andrew.reifers@snyk.io](mailto:andrew.reifers@snyk.io) |
 | [github_app_propagator](github_app_propagator)       | Python utility that clones the Snyk GitHub App integration from one org to the other orgs in a group                     | [torsten.cannell@snyk.io](mailto:torsten.cannell@snyk.io)      |
 | [ignore_non_fixable_vulns](ignore_non_fixable_vulns) | Python utility: discover non-fixable vulns per org/group, CSV checkpoint/resume, project ignores with disregardIfFixable | [torsten.cannell@snyk.io](mailto:torsten.cannell@snyk.io)      |
+| [monitor_fetch_issues](monitor_fetch_issues)           | Shell script: run `snyk monitor`, parse project ID from uri, fetch vulns via V1 aggregated-issues API | [torsten.cannell@snyk.io](mailto:torsten.cannell@snyk.io)      |
 
 
 
